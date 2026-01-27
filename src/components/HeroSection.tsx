@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Navbar from "@/components/Navbar";
 import heroBuilding from "@/assets/hero-building.jpg";
 
 const partnerLogos = [
@@ -13,8 +14,8 @@ const partnerLogos = [
 
 const HeroSection = () => {
   return (
-    <section id="home" className="bg-secondary px-4 md:px-6 lg:px-8 pt-0 pb-4 md:pb-6 lg:pb-8">
-      <div className="relative min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] overflow-hidden rounded-b-[2rem] md:rounded-b-[2.5rem] lg:rounded-b-[3rem]">
+    <section id="home" className="bg-background px-4 md:px-6 lg:px-8 pt-4 md:pt-6 pb-4 md:pb-6 lg:pb-8">
+      <div className="relative min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] overflow-hidden rounded-3xl">
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0">
           <img
@@ -27,12 +28,11 @@ const HeroSection = () => {
 
         {/* Content */}
         <div className="relative z-10 min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] flex flex-col">
-          {/* Spacer for navbar */}
-          <div className="h-20 md:h-24" />
+          <Navbar />
           
           {/* Main Content */}
           <div className="flex-1 flex flex-col justify-between px-6 md:px-10 lg:px-14 xl:px-20 pb-8">
-            <div className="flex-1 flex flex-col justify-center max-w-4xl pt-6">
+            <div className="flex-1 flex flex-col justify-center max-w-4xl pt-10 md:pt-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary-foreground leading-[1.15] mb-6 animate-fade-in">
                 Solusi Outsourcing Profesional untuk Mendukung Operasional Bisnis Anda
               </h1>

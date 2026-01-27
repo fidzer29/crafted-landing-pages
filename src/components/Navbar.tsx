@@ -13,16 +13,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="absolute top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-48px)] max-w-7xl">
-      <div className="nav-glass rounded-2xl px-8 py-4">
+    <nav className="absolute top-0 left-0 right-0 z-50 px-4 md:px-6 lg:px-8">
+      <div className="nav-glass rounded-b-3xl px-6 md:px-8 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#home" className="text-xl font-bold text-foreground whitespace-nowrap">
+          <a href="#home" className="text-lg md:text-xl font-bold text-foreground whitespace-nowrap">
             Company Logo
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -36,7 +36,7 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="outline" className="rounded-xl border-foreground/20 hover:bg-foreground/5 px-6">
+            <Button variant="outline" className="rounded-xl border-foreground/20 hover:bg-foreground/5 px-5 py-2">
               Konsultasi Gratis
             </Button>
           </div>

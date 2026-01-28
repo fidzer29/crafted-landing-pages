@@ -49,6 +49,40 @@ const features = [
   },
 ];
 
+const FeatureCard = ({ feature }: { feature: typeof features[0] }) => {
+  return (
+    <div
+      className="group relative bg-card rounded-2xl p-6 md:p-8 card-shadow border border-transparent
+                 transition-all duration-500 ease-out cursor-pointer
+                 hover:bg-foreground hover:border-foreground hover:shadow-2xl hover:scale-[1.02]"
+    >
+      <span className="text-sm font-semibold text-muted-foreground mb-4 block transition-colors duration-500 group-hover:text-primary-foreground/70">
+        {feature.number}
+      </span>
+      <h3 className="text-lg font-bold text-foreground mb-4 transition-colors duration-500 group-hover:text-primary-foreground">
+        {feature.title}
+      </h3>
+      {feature.isList ? (
+        <ul className="space-y-3">
+          {feature.items?.map((item, idx) => (
+            <li 
+              key={idx} 
+              className="text-sm text-muted-foreground flex gap-2 transition-colors duration-500 group-hover:text-primary-foreground/80"
+            >
+              <span className="text-foreground transition-colors duration-500 group-hover:text-primary-foreground">•</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-muted-foreground leading-relaxed transition-colors duration-500 group-hover:text-primary-foreground/80">
+          {feature.description}
+        </p>
+      )}
+    </div>
+  );
+};
+
 const WhyChooseUsSection = () => {
   return (
     <section className="py-20 section-gray">
@@ -58,58 +92,14 @@ const WhyChooseUsSection = () => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* First row - 2 cards */}
           {features.slice(0, 2).map((feature) => (
-            <div
-              key={feature.number}
-              className="bg-card rounded-2xl p-6 md:p-8 card-shadow"
-            >
-              <span className="text-sm font-semibold text-muted-foreground mb-4 block">
-                {feature.number}
-              </span>
-              <h3 className="text-lg font-bold text-foreground mb-4">
-                {feature.title}
-              </h3>
-              {feature.isList ? (
-                <ul className="space-y-3">
-                  {feature.items?.map((item, idx) => (
-                    <li key={idx} className="text-sm text-muted-foreground flex gap-2">
-                      <span className="text-foreground">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-              )}
-            </div>
+            <FeatureCard key={feature.number} feature={feature} />
           ))}
         </div>
 
-        {/* Second row - 3 cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {features.slice(2).map((feature) => (
-            <div
-              key={feature.number}
-              className="bg-card rounded-2xl p-6 md:p-8 card-shadow"
-            >
-              <span className="text-sm font-semibold text-muted-foreground mb-4 block">
-                {feature.number}
-              </span>
-              <h3 className="text-lg font-bold text-foreground mb-4">
-                {feature.title}
-              </h3>
-              <ul className="space-y-3">
-                {feature.items?.map((item, idx) => (
-                  <li key={idx} className="text-sm text-muted-foreground flex gap-2">
-                    <span className="text-foreground">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <FeatureCard key={feature.number} feature={feature} />
           ))}
         </div>
       </div>

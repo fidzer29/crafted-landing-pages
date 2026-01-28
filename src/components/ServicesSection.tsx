@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import serviceSecurity from "@/assets/service-security.jpg";
@@ -45,22 +44,18 @@ const ServicesSection = () => {
             Layanan Kami
           </h2>
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full border-border"
+            <button
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
               onClick={scrollPrev}
             >
               <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full border-border"
+            </button>
+            <button
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
               onClick={scrollNext}
             >
               <ChevronRight className="h-5 w-5" />
-            </Button>
+            </button>
           </div>
         </div>
 

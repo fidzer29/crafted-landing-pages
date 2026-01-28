@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 import serviceSecurity from "@/assets/service-security.jpg";
@@ -45,16 +45,16 @@ const ServicesSection = () => {
           </h2>
           <div className="flex gap-2">
             <button
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+              className="w-10 h-10 rounded-md border border-border flex items-center justify-center hover:bg-accent transition-colors"
               onClick={scrollPrev}
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
             </button>
             <button
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+              className="w-10 h-10 rounded-md border border-border flex items-center justify-center hover:bg-accent transition-colors"
               onClick={scrollNext}
             >
-              <ChevronRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
             </button>
           </div>
         </div>

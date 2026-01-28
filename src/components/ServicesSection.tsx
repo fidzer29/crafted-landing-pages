@@ -1,12 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { useState, useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { useState, useEffect, useCallback } from "react";
 
 import serviceSecurity from "@/assets/service-security.jpg";
 import serviceCleaning from "@/assets/service-cleaning.jpg";
@@ -33,18 +28,41 @@ const services = [
 ];
 
 const ServicesSection = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: true,
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) emblaApi.scrollTo(index);
+    },
+    [emblaApi]
+  );
 
   useEffect(() => {
-    if (!api) return;
+    if (!emblaApi) return;
 
-    setCurrent(api.selectedScrollSnap());
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
 
   return (
     <section id="services" className="py-20 bg-background">
@@ -58,7 +76,7 @@ const ServicesSection = () => {
               variant="outline"
               size="icon"
               className="rounded-full border-border"
-              onClick={() => api?.scrollPrev()}
+              onClick={scrollPrev}
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -66,26 +84,19 @@ const ServicesSection = () => {
               variant="outline"
               size="icon"
               className="rounded-full border-border"
-              onClick={() => api?.scrollNext()}
+              onClick={scrollNext}
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
-        <Carousel
-          setApi={setApi}
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-4">
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex -ml-4">
             {services.map((service, index) => (
-              <CarouselItem
+              <div
                 key={index}
-                className="pl-4 basis-full md:basis-1/2 lg:basis-1/4"
+                className="min-w-0 shrink-0 grow-0 basis-full md:basis-1/2 lg:basis-1/4 pl-4"
               >
                 <div className="group">
                   <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
@@ -99,10 +110,10 @@ const ServicesSection = () => {
                     {service.title}
                   </h3>
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-        </Carousel>
+          </div>
+        </div>
 
         {/* Dots Indicator - Mobile only */}
         <div className="flex justify-center gap-2 mt-6 md:hidden">
@@ -110,9 +121,9 @@ const ServicesSection = () => {
             <button
               key={index}
               className={`w-2 h-2 rounded-full transition-colors ${
-                index === current ? "bg-primary" : "bg-border"
+                index === selectedIndex ? "bg-primary" : "bg-border"
               }`}
-              onClick={() => api?.scrollTo(index)}
+              onClick={() => scrollTo(index)}
             />
           ))}
         </div>

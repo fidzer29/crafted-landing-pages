@@ -1,6 +1,12 @@
-import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { useState, useEffect } from "react";
 
 import serviceSecurity from "@/assets/service-security.jpg";
 import serviceCleaning from "@/assets/service-cleaning.jpg";
@@ -27,15 +33,18 @@ const services = [
 ];
 
 const ServicesSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % services.length);
-  };
+  useEffect(() => {
+    if (!api) return;
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-  };
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <section id="services" className="py-20 bg-background">
@@ -49,7 +58,7 @@ const ServicesSection = () => {
               variant="outline"
               size="icon"
               className="rounded-full border-border"
-              onClick={prevSlide}
+              onClick={() => api?.scrollPrev()}
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -57,66 +66,55 @@ const ServicesSection = () => {
               variant="outline"
               size="icon"
               className="rounded-full border-border"
-              onClick={nextSlide}
+              onClick={() => api?.scrollNext()}
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
-        {/* Desktop Grid */}
-        <div className="hidden md:grid grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <div key={index} className="group">
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <h3 className="mt-4 text-base font-medium text-foreground">
-                {service.title}
-              </h3>
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile Carousel */}
-        <div className="md:hidden">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-300"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {services.map((service, index) => (
-                <div key={index} className="min-w-full px-2">
+        <Carousel
+          setApi={setApi}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {services.map((service, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-4 basis-full md:basis-1/2 lg:basis-1/4"
+              >
+                <div className="group">
                   <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
                     <img
                       src={service.image}
                       alt={service.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                   <h3 className="mt-4 text-base font-medium text-foreground">
                     {service.title}
                   </h3>
                 </div>
-              ))}
-            </div>
-          </div>
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-4">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentIndex ? "bg-primary" : "bg-border"
-                }`}
-                onClick={() => setCurrentIndex(index)}
-              />
+              </CarouselItem>
             ))}
-          </div>
+          </CarouselContent>
+        </Carousel>
+
+        {/* Dots Indicator - Mobile only */}
+        <div className="flex justify-center gap-2 mt-6 md:hidden">
+          {services.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === current ? "bg-primary" : "bg-border"
+              }`}
+              onClick={() => api?.scrollTo(index)}
+            />
+          ))}
         </div>
       </div>
     </section>
